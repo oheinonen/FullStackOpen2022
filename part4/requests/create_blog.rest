@@ -1,10 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pbWEiLCJpZCI6IjYyOGRlNmQyMjYxNzQ5NGFjNTk0OWIwYyIsImlhdCI6MTY1MzQ3MzUxN30.LiazEzCXwKi4obROIN8OBu6Mczyt3rtnAGkSHpYJ2wE
 
-{
-    "title": "Toka blogi",
-    "author": "Minäitse",
+{    
+    "title": "sellasta blogi",
+    "author": "mikko",
     "url": "is.fi",
     "likes": 10
-
 }
