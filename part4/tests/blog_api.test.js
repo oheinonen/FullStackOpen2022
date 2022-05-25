@@ -87,6 +87,8 @@ describe('addition of a new blog', () => {
     })
 
     test('blog without title is not added ', async () => {
+      const blogsAtStart = await helper.blogsInDb()
+
       const newBlog = {
           author: "heinonos",
           url: "fullstackopen.com",
@@ -98,11 +100,13 @@ describe('addition of a new blog', () => {
         .expect(400)
 
       const blogsAtEnd = await helper.blogsInDb()
-      expect(blogsAtEnd).toHaveLength(blogsAtEnd.length)
+      expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
       
     })
 
     test('blog without url is not added ', async () => {
+      const blogsAtStart = await helper.blogsInDb()
+
       const newBlog = {
           title: "vAlId bLoG",
           author: "heinonos"
@@ -114,7 +118,7 @@ describe('addition of a new blog', () => {
         .expect(400)
         const blogsAtEnd = await helper.blogsInDb()
 
-        expect(blogsAtEnd).toHaveLength(blogsAtEnd.length)
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
     })
   })
 
@@ -125,6 +129,21 @@ describe('addition of a new blog', () => {
       await Blog.insertMany(helper.initialBlogs)
     })
 
+
+    test('fails if id is not valid', async () => {
+      const fakeId = 'fakeId'
+
+      await api
+        .delete(`/api/blogs/${fakeId}}`)
+        .expect(400)
+
+      const blogsAtEnd = await helper.blogsInDb()
+
+      expect(blogsAtEnd).toHaveLength(
+        helper.initialBlogs.length
+      )
+
+    })
 
     test('succeeds with status code 204 if id is valid', async () => {
       const blogsAtStart = await helper.blogsInDb()
@@ -144,6 +163,7 @@ describe('addition of a new blog', () => {
 
       expect(titles).not.toContain(blogToDelete.content)
     })
+
   })
 
   describe('updating a blog', () => {
@@ -176,6 +196,25 @@ describe('addition of a new blog', () => {
       expect(res.likes).toBe(14)
 
     })
+    test('fails if id is not valid', async () => {
+      const fakeId = 'fakeId'
+      const updated_blog = {
+        likes: 14
+      }
+
+      await api
+        .put(`/api/blogs/${fakeId}`)
+        .send(updated_blog)
+        .expect(400)
+
+      const blogsAtEnd = await helper.blogsInDb()
+
+      expect(blogsAtEnd).toHaveLength(
+        helper.initialBlogs.length
+      )
+
+    })
+
   })
 
 
